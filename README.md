@@ -1,9 +1,9 @@
-# library.h
+# test.h
 
 ## Get started
 
 ```bash
-wget https://raw.githubusercontent.com/IncludeOnly/<library>.h/refs/heads/main/<library>.h
+wget https://raw.githubusercontent.com/IncludeOnly/test.h/refs/heads/main/test.h
 ```
 
 ## Example
@@ -15,9 +15,9 @@ wget https://raw.githubusercontent.com/IncludeOnly/<library>.h/refs/heads/main/<
 ## If you really need to link
 
 ```bash
-mv <library>.h <library>.c
-cc -o lib<library>.so <library>.c -fPIC -D<LIBRARY>_IMPLEMENTATION -shared
-mv <library>.c <library>.h
+mv test.h test.c
+cc -o libtest.so test.c -fPIC -DTEST_IMPLEMENTATION -shared
+mv test.c test.h
 ```
 
 ## License
