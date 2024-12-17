@@ -55,7 +55,7 @@ TESTAPI void load_test(const char* name);
 TESTAPI void load_test(const char* name)
 {
     char input_path[128];
-    snprintf(input_path, sizeof(input_path), "test/%s.ct", name);
+    snprintf(input_path, sizeof(input_path), "test/%s.ctd", name);
     FILE* input_file = fopen(input_path, "r");
     if (input_file == NULL) {
         perror("Failed to open input file");
@@ -81,8 +81,10 @@ TESTAPI void load_test(const char* name)
 
     fprintf(output_file, "#ifndef %s_h\n", name);
     fprintf(output_file, "#define %s_h\n", name);
-    // fprintf(output_file, "#include \"tests.h\"\n");
-    fprintf(output_file, "\n#define TEST_%s \\\n", name);
+    fprintf(output_file, "\n#define TEST_%s", name);
+    if(line_count > 0) fprintf(output_file, "\\");
+    else fprintf(output_file, " 1");
+    fprintf(output_file, "\n");
 
     int current_line = 0;
     while (fgets(line, sizeof(line), input_file)) {
