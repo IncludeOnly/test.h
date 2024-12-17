@@ -56,12 +56,15 @@ TESTAPI void load_test(const char* name)
     snprintf(input_path, sizeof(input_path), "test/%s.ctd", name);
     FILE* input_file = fopen(input_path, "r");
     if (input_file == NULL) {
-        perror("Failed to open input file");
+        FILE* write = fopen(input_path, "w");
+        fclose(write);
+        load_test(name);
         return;
     }
 
     char output_path[128];
     snprintf(output_path, sizeof(output_path), "test/%s.h", name);
+
     FILE* output_file = fopen(output_path, "w");
     if (output_file == NULL) {
         perror("Failed to open output file");
