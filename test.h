@@ -28,7 +28,7 @@ TESTAPI void load_test(const char* name);
 #define ANSI_GREEN "\e[0;32m"
 
 #define FAILF(fen, fmt, ...) \
-    fprintf(stderr, ANSI_RED "FAILED: (" #fen ")" fmt ANSI_RESET "\n", ##__VA_ARGS__)
+    fprintf(stderr, ANSI_RED "FAILED: (" fen ") " fmt ANSI_RESET "\n", ##__VA_ARGS__)
 #define FAIL(fmt, ...) \
     fprintf(stderr, ANSI_RED "FAILED: " fmt ANSI_RESET "\n", ##__VA_ARGS__)
 #define SUCC(fmt, ...) \
