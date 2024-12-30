@@ -1,5 +1,5 @@
 /**
- * test.h
+ * test.h v0.0.2
  *
  * A tiny data-driven testing framework
  *
@@ -12,6 +12,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+
+#define TEST_VERSION "0.0.2"
 
 #ifndef TESTAPI
     #define TESTAPI static
