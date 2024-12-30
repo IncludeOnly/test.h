@@ -57,6 +57,10 @@ TESTAPI void load_test(const char* name)
     FILE* input_file = fopen(input_path, "r");
     if (input_file == NULL) {
         FILE* write = fopen(input_path, "w");
+        if(write == NULL) {
+            perror("Failed to open ctd file. The test directory may be missing");
+            return;
+        }
         fclose(write);
         load_test(name);
         return;
@@ -75,26 +79,46 @@ TESTAPI void load_test(const char* name)
     char line[256];
     int line_count = 0;
 
+    // First pass: Count non-empty, non-comment lines
     while (fgets(line, sizeof(line), input_file)) {
+        // Remove trailing newline, if present
+        line[strcspn(line, "\n")] = '\0';
+
+        // Skip empty lines and lines starting with '#'
+        if (line[0] == '\0' || line[0] == '#') {
+            continue;
+        }
+
         line_count++;
     }
     rewind(input_file);
 
+    // Write the header file
     fprintf(output_file, "#ifndef %s_h\n", name);
     fprintf(output_file, "#define %s_h\n", name);
     fprintf(output_file, "\n#define TEST_%s", name);
-    if(line_count > 0) fprintf(output_file, "\\");
-    else fprintf(output_file, " 1");
-    fprintf(output_file, "\n");
+    if (line_count > 0) {
+        fprintf(output_file, "\\\n");
+    } else {
+        fprintf(output_file, " 1\n");
+    }
 
     int current_line = 0;
     while (fgets(line, sizeof(line), input_file)) {
-        line[strlen(line) - 1] = '\0'; // Remove newline character
+        // Remove trailing newline
+        line[strcspn(line, "\n")] = '\0';
+
+        // Skip empty lines and lines starting with '#'
+        if (line[0] == '\0' || line[0] == '#') {
+            continue;
+        }
+
         if (current_line < line_count - 1) {
             fprintf(output_file, "\t%s(%s), \\\n", name, line);
         } else {
             fprintf(output_file, "\t%s(%s)\n", name, line);
         }
+
         current_line++;
     }
 
